@@ -9,6 +9,7 @@ export const HeaderContainer = styled.div`
     align-content:center;
     height: 50px;
     padding: 5px 10px;
+      /* border: solid 1px red; */
 `;
 export const IconGroup = styled(GroupIcon)`
     cursor:pointer;

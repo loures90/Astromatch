@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { baseUrl, aluno } from '../../APIParameters'
-import { ProfileContainer, Img, Btns, Main, P, Heart, OverHeart, NextMatch, ProfileText} from './ProfileStyeld'
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { ProfileContainer, ImgMatch,  Img, ImgNoMatch, Btns, Main, P, Heart, OverHeart, NextMatch, ProfileText} from './ProfileStyeld'
 import Fab from '@material-ui/core/Fab';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-
 
 
 export default function Profiles() {
   const [profilesApi, setProfilesApi] = useState([])
+  const [choiceMatch, setChoiceMatch] = useState("")
 
   useEffect(() => {
     getProfiles()
+    // setChoiceMatch('')
   }, [])
 
   const getProfiles = () => {
@@ -34,17 +33,26 @@ export default function Profiles() {
       .catch((err) => console.log(err))
   }
 
-  const onClickFunction = (id, choice) => {
+  const onClickFunction = (id, choice, opinion) => {
+    setChoiceMatch(opinion)
+    console.log(choiceMatch)
     postMatches(id, choice)
     getProfiles()
+    clearOpinion()
   }
-
-
+  const clearOpinion = () =>{
+    setTimeout(()=>setChoiceMatch(""), 1000) 
+  }
   return (
     <ProfileContainer>
       {profilesApi && (
         <Main>
-          <Img src={profilesApi.photo} alt={`imagem ${profilesApi.name}`} />
+          {choiceMatch === 'match' ?
+           <ImgMatch src={profilesApi.photo} alt={`imagem ${profilesApi.name}`} /> :
+           (choiceMatch === 'noMatch' ? <ImgNoMatch src={profilesApi.photo} alt={`imagem ${profilesApi.name}`} /> :
+           <Img src={profilesApi.photo} alt={`imagem ${profilesApi.name}`} />)
+          }
+
           <ProfileText>
             <P>{profilesApi.name}, {profilesApi.age}</P>
             <P>{profilesApi.bio}</P>
@@ -53,10 +61,10 @@ export default function Profiles() {
           <Btns>
 
             <OverHeart aria-label="like">
-              <Heart style={{ fontSize: 40 }} onClick={() => onClickFunction(profilesApi.id, true)} />
+              <Heart style={{ fontSize: 40 }} onClick={() => onClickFunction(profilesApi.id, true, 'match')} />
             </OverHeart>
             <Fab>
-              <NextMatch style={{ fontSize: 40 }} onClick={() => onClickFunction(profilesApi.id, false)} />
+              <NextMatch style={{ fontSize: 40 }} onClick={() => onClickFunction(profilesApi.id, false, 'noMatch')} />
             </Fab>
 
           </Btns>
