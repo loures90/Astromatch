@@ -7,4 +7,4 @@ Está estilizado é responsivo.
 Tem animations do styled-components.
 ícones foram importados do UI Material.
 
-link do surge: maniacal-size.surge.sh
+link do surge: unkempt-star.surge.sh
